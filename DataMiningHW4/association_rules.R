@@ -1,0 +1,8 @@
+#Solution(a)
+library("arules")
+transactions <- read.transactions(file = "ratingsAsBasket.txt", format = "basket",rm.duplicates="FALSE")
+summary(transactions)
+transactions.apriori <- apriori(transactions)
+inspect(transactions.apriori[1:10])
+transactions.subset <- subset(transactions.apriori, subset = lift > 3.0)
+inspect(transactions.subset)
