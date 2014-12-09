@@ -122,5 +122,33 @@ news.corpus[[980]]
 
 # Solution (5 (c))
 dtm <- DocumentTermMatrix(news.corpus, control = list(minWordLength = 1, minDocFreq = 1))
-dim(dtm)
-# [1]  1986 22213
+> dim(dtm)
+[1]  1986 22213
+
+> dtm
+# <<DocumentTermMatrix (documents: 1986, terms: 22213)>>
+# Non-/sparse entries: 175981/43939037
+# Sparsity           : 100%
+# Maximal term length: 163
+# Weighting          : term frequency (tf)
+
+inspect(news.corpus[980])
+# <<VCorpus (documents: 1, metadata (corpus/indexed): 0/0)>>
+
+# [[1]]
+# <<PlainTextDocument (metadata: 7)>>
+#  cheekeentartarusuwaeduau desmond chan
+# subject re honda clutch chatter
+# organization  university  western australia
+# lines 
+# nntppostinghost tartarusuwaeduau
+# xnewsreader nn version  
+
+#       also experience  kinda problem    bmw   cold
+# start ups  clutch seems   sticky  everytime  drive  
+#  km  clutch seems  stick onto somewhere    depress
+#  clutch  whole chassis moves along   preheating 
+# becomes smooth   think   suggestion   
+# humudity  right      remedy  also found  
+#  clutch  already thin  still alright   couple grand 
+

@@ -103,7 +103,7 @@ were in the same basket for $12.3\%$ of the total transactions.
 The Confidence which is given as  0.8698727
 tells that the probablity of the movie ``Reservoir Dogs'' and ``Pulp Fiction'' appearing in the same basket
 is 0.8698727
-
+\newpage
 \section*{Solution 4(c)}
 \begin{lstlisting}[language = R]
 transactions.subset <- subset(transactions.apriori, subset = lift > 3.0)
@@ -163,8 +163,7 @@ inspect(transactions.subset)
     M.4712.R.High,                                              
     M.647.R.High}  => {M.646.R.High}  0.1112  0.8261516 3.067774
 \end{verbatim}
-\newline
-\newline
+
 Let us consider the 1st in the above rule where the lift is greater than 3.0
 The association rule states that,
 \begin{verbatim}
@@ -172,11 +171,273 @@ The association rule states that,
 1  {M.1817.R.High,                                              
     M.647.R.High}  => {M.646.R.High}  0.1026  0.8234350 3.057687
 \end{verbatim}
+
 Lift indicates the strength of an association rule over the random
-occurance co-occurance of the movie ``Aliens'',``Terminator 2: Judgment Day'' and the movie ``The Terminator''. Lift provides information about the change in the
+occurance co-occurance of the movie\newline``Aliens'',``Terminator 2: Judgment Day'' and the movie ``The Terminator''. Lift provides information about the change in the
 probablity of Item A in the presence of Item B. Lift values greater than 3.0 indicate that transactions
-containing ``The Terminator'' contain ``Aliens'' and ``Terminator 2: Judgment Day'' more often than transactions
+containing ``The Terminator'' has ``Aliens'' and ``Terminator 2: Judgment Day'' more often than transactions
 that do not contain ``The Terminator''.
+\newpage
+\section*{Solultion 5(a)}
+\begin{lstlisting}[language = R]
+directory <- c("/home/kevin/DataMining/DataMiningHW4/rec.motorcycles","/home/kevin/DataMining/DataMiningHW4/rec.autos")
+dir_source <- DirSource(directory = directory, encoding = "UTF-8")
+news.corpus <- VCorpus(dir_source, readerControl = list(reader = reader(dir_source)))
+\end{lstlisting}
+\begin{verbatim}
+> news.corpus
+> <<VCorpus (documents: 1986, metadata (corpus/indexed): 0/0)>>
+
+> length(news.corpus)
+[1] 1986
+
+> news.corpus[[980]]
+<<PlainTextDocument (metadata: 7)>>
+From: cheekeen@tartarus.uwa.edu.au (Desmond Chan)
+Subject: Re: Honda clutch chatter
+Organization: The University of Western Australia
+Lines: 8
+NNTP-Posting-Host: tartarus.uwa.edu.au
+X-Newsreader: NN version 6.4.19 #1
+
+     I also experience this kinda problem in my 89 BMW 318. During cold
+start ups, the clutch seems to be sticky and everytime i drive out, for
+about 5km, the clutch seems to stick onto somewhere that if i depress
+the clutch, the whole chassis moves along. But after preheating, it
+becomes smooth again. I think that your suggestion of being some
+humudity is right but there should be some remedy. I also found out that
+my clutch is already thin but still alright for a couple grand more!
+\end{verbatim}
+\newpage
+\section*{Solution 5(b)}
+\begin{lstlisting}[language = R]
+# Applying the removePunctuation over the news.corpus
+news.corpus <- tm_map(news.corpus, removePunctuation)
+news.corpus <- VCorpus(VectorSource(news.corpus))
+\end{lstlisting}
+\begin{verbatim}
+> news.corpus[[980]]
+<<PlainTextDocument (metadata: 7)>>
+From cheekeentartarusuwaeduau Desmond Chan
+Subject Re Honda clutch chatter
+Organization The University of Western Australia
+Lines 8
+NNTPPostingHost tartarusuwaeduau
+XNewsreader NN version 6419 1
+
+     I also experience this kinda problem in my 89 BMW 318 During cold
+start ups the clutch seems to be sticky and everytime i drive out for
+about 5km the clutch seems to stick onto somewhere that if i depress
+the clutch the whole chassis moves along But after preheating it
+becomes smooth again I think that your suggestion of being some
+humudity is right but there should be some remedy I also found out that
+my clutch is already thin but still alright for a couple grand more
+\end{verbatim}
+
+\begin{lstlisting}[language = R]
+# Applying removeNumbers over news.corpus
+news.corpus <- tm_map(news.corpus, removeNumbers)
+news.corpus <- VCorpus(VectorSource(news.corpus))
+\end{lstlisting}
+\begin{verbatim}
+> news.corpus[980]
+<<PlainTextDocument (metadata: 7)>>
+From cheekeentartarusuwaeduau Desmond Chan
+Subject Re Honda clutch chatter
+Organization The University of Western Australia
+Lines 
+NNTPPostingHost tartarusuwaeduau
+XNewsreader NN version  
+
+     I also experience this kinda problem in my  BMW  During cold
+start ups the clutch seems to be sticky and everytime i drive out for
+about km the clutch seems to stick onto somewhere that if i depress
+the clutch the whole chassis moves along But after preheating it
+becomes smooth again I think that your suggestion of being some
+humudity is right but there should be some remedy I also found out that
+my clutch is already thin but still alright for a couple grand more
+\end{verbatim}
+
+\begin{lstlisting}[language = R]
+# Applying tolower to news.corpus
+news.corpus <- tm_map(news.corpus, tolower)
+news.corpus <- VCorpus(VectorSource(news.corpus))
+\end{lstlisting}
+\begin{verbatim}
+> news.corpus[[980]]
+<<PlainTextDocument (metadata: 7)>>
+from cheekeentartarusuwaeduau desmond chan
+subject re honda clutch chatter
+organization the university of western australia
+lines 
+nntppostinghost tartarusuwaeduau
+xnewsreader nn version  
+
+     i also experience this kinda problem in my  bmw  during cold
+start ups the clutch seems to be sticky and everytime i drive out for
+about km the clutch seems to stick onto somewhere that if i depress
+the clutch the whole chassis moves along but after preheating it
+becomes smooth again i think that your suggestion of being some
+humudity is right but there should be some remedy i also found out that
+my clutch is already thin but still alright for a couple grand more
+\end{verbatim}
+
+\begin{lstlisting}[language = R]
+# Applying removeWords stopwords("english")
+news.corpus <- tm_map(news.corpus, removeWords, stopwords("english"))
+news.corpus <- VCorpus(VectorSource(news.corpus))
+\end{lstlisting}
+\begin{verbatim}
+> news.corpus[[980]]
+<<PlainTextDocument (metadata: 7)>>
+ cheekeentartarusuwaeduau desmond chan
+subject re honda clutch chatter
+organization  university  western australia
+lines 
+nntppostinghost tartarusuwaeduau
+xnewsreader nn version  
+
+      also experience  kinda problem    bmw   cold
+start ups  clutch seems   sticky  everytime  drive  
+ km  clutch seems  stick onto somewhere    depress
+ clutch  whole chassis moves along   preheating 
+becomes smooth   think   suggestion   
+humudity  right      remedy  also found  
+ clutch  already thin  still alright   couple grand
+\end{verbatim}
+
+\section*{Solution 5(c)}
+\begin{lstlisting}[language = R]
+dtm <- DocumentTermMatrix(news.corpus, control = list(minWordLength = 1, minDocFreq = 1))
+\end{lstlisting}
+\begin{verbatim}
+> dim(dtm)
+[1]  1986 22213
+
+> dtm
+<<DocumentTermMatrix (documents: 1986, terms: 22213)>>
+Non-/sparse entries: 175981/43939037
+Sparsity           : 100%
+Maximal term length: 163
+Weighting          : term frequency (tf)
+
+> inspect(news.corpus[[980]])
+<<VCorpus (documents: 1, metadata (corpus/indexed): 0/0)>>
+
+[[1]]
+<<PlainTextDocument (metadata: 7)>>
+ cheekeentartarusuwaeduau desmond chan
+subject re honda clutch chatter
+organization  university  western australia
+lines 
+nntppostinghost tartarusuwaeduau
+xnewsreader nn version  
+
+      also experience  kinda problem    bmw   cold
+start ups  clutch seems   sticky  everytime  drive  
+ km  clutch seems  stick onto somewhere    depress
+ clutch  whole chassis moves along   preheating 
+becomes smooth   think   suggestion   
+humudity  right      remedy  also found  
+ clutch  already thin  still alright   couple grand
+\end{verbatim}
+
+\section*{Solution 2 (a)}
+\begin{lstlisting}[language = R]
+# Solution(5)
+# Kevin Aloysius
+# Reading az-5000.txt data
+set.seed(1)
+char <- read.table("az-5000.txt", header = TRUE)
+# Removing the first Column
+char <- char[,2:19]
+# Applying kmeans() to calculate the number of clusters
+fit <- vector()
+
+for (i in 2:26)
+{
+  output <- kmeans(char, centers = i, iter.max = 26)
+  fit[i] <- (1/i)*sum(kmeans(char, centers = i)$withinss)
+}
+plot(1:26, fit, type = "b", xlab = "Number of Clusters", ylab = "Goodness of Fit (withinss)",
+     main = "Number of Clusters v/s Goodness of Fit")
+
+# Applying kmeans from 15 to 26 to calculate the number of clusters
+fit2 <- vector()
+
+for (i in 15:26)
+{
+  
+  fit2[i] <- (1/i)*sum(kmeans(char, centers = i)$withinss)
+}
+plot(1:26, fit2, type = "b", xlab = "Number of Clusters", ylab = "Goodness of Fit (withinss)",
+     main = "Number of Clusters v/s Goodness of Fit")
 
 
+\end{lstlisting}
+\section*{Solution 2 (b)}
+\begin{center}
+\includegraphics[scale=0.7]{cluster_goodness.eps}
+\end{center}
+\begin{center}
+\includegraphics[scale=0.7]{kmeans_cluster.eps}
+\end{center}
+The 23rd letter 'W' suggests the number of natural clusters. This is because
+after plotting the number of K's from 15 to 26, we could observe a dip at 23 suggesting
+the number of clusters.
+\newpage
+\section*{Solution 3 (a)}
+\begin{lstlisting}[language = R]
+# Hierarchial Clustering
+# Kevin Aloysius
+set.seed(123)
+
+# Loading the data
+character <- read.table("az-5000.txt", header = TRUE)
+
+# Removing the first column
+char <- character[,-1]
+
+# Applying kmeans
+fit <- vector()
+for (i in 2:26)
+{
+  output <- kmeans(char, centers = i, iter.max = 26)
+  
+}
+
+# Hierarchial Clustering
+fit <- hclust(a <- dist(output$centers, method = "euclidean"), method="average")
+plot(fit)
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.7]{dendogram.eps}
+\end{center}
+\newpage
+\section*{Solution 3 (b)}
+\begin{lstlisting}[language = R]
+# 26x26 Matrix Mapping, Letters vs Cluster numbers
+
+letter_matrixrix <- character[,1]
+num_cluster <- output$cluster 
+matrix <- matrix(0,26,26)
+rownames(matrix) <- LETTERS
+
+for(k in 1:5000)
+{ 
+  matrix[letter_matrix[k], num_cluster[k]] <-  matrix[letter_matrix[k], num_cluster[k]] + 1
+}
+
+# Replacing Values of Dendograms with Letters
+common <- c()
+for(i in 1:26)
+{
+  common[i] <- which.max(matrix[,i])
+}
+
+plot(fit, labels=LETTERS[common])
+\end{lstlisting}
+\begin{center}
+\includegraphics[scale=0.7]{dendogram_letters.eps}
+\end{center}
 \end{document}
